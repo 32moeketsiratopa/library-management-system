@@ -1,12 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../utils/localStorage";
+import { getData, saveData } from "../utils/localStorage";
 
 function Dashboard() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    setBooks(getData("books"));
-  }, []);
+  let storedBooks = getData("books");
+
+  if (storedBooks.length === 0) {
+    const defaultBooks = [
+      {
+        title: "Java Programming",
+        author: "Herbert Schildt",
+        quantity: 4
+      },
+      {
+        title: "Python Crash Course",
+        author: "Eric Matthes",
+        quantity: 5
+      },
+      {
+        title: "Database System Concepts",
+        author: "Abraham Silberschatz",
+        quantity: 2
+      },
+      {
+        title: "Computer Networking",
+        author: "Andrew S. Tanenbaum",
+        quantity: 4
+      },
+      {
+        title: "Clean Code",
+        author: "Robert C. Martin",
+        quantity: 3
+      },
+      {
+        title: "Operating System Concepts",
+        author: "Abraham Silberschatz",
+        quantity: 2
+      }
+    ];
+
+    saveData("books", defaultBooks);
+    storedBooks = defaultBooks;
+  }
+
+  setBooks(storedBooks);
+}, []);
 
   const totalBooks = books.length;
 
